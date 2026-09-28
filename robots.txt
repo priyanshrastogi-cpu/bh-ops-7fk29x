@@ -1,0 +1,4 @@
+# This dashboard is not meant to be found through search.
+# It keeps crawlers away; it does not restrict access.
+User-agent: *
+Disallow: /
