@@ -1,4 +1,12 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body><title>Store Performance Matrix</title>
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- charset must be declared here, not left to the server. GitHub Pages sends
+     charset=utf-8 in its HTTP header, but the copy opened straight from the
+     Master folder has no header at all - the browser then guesses, and every
+     rupee sign turns into mojibake. -->
+<title>Store Performance Matrix</title>
 <!-- This page is published to a public static host. The data is embedded in
      the page, so anyone holding the URL can read all of it. These tags keep it
      out of search engines, which removes the discovery route but is NOT access
@@ -40,6 +48,25 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--plane);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45}
+/* Staleness banner. The page is served from a static host, so it keeps
+   serving the last successful build for as long as nobody notices. This is
+   the only thing standing between a failed 8am run and somebody reading
+   week-old numbers as though they were this morning's. */
+.stale{display:block;margin:0 0 18px;padding:13px 16px;border-radius:7px;
+  font-size:13.5px;line-height:1.5;font-weight:500;border:1px solid}
+.stale[hidden]{display:none}
+.stale b{font-weight:700}
+.stale .age{font-family:var(--mono);font-weight:600}
+.stale.warn{background:#fff8e6;border-color:#f0cf7a;color:#5c4404}
+.stale.crit{background:#fdecec;border-color:#e69a9a;color:#7d1d1d;
+  font-size:14.5px;padding:16px 18px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stale.warn{
+  background:#2e2409;border-color:#6b5514;color:#f6dc9a}
+  :root:not([data-theme="light"]) .stale.crit{
+  background:#331212;border-color:#7d2a2a;color:#f6b6b6}}
+:root[data-theme="dark"] .stale.warn{background:#2e2409;border-color:#6b5514;color:#f6dc9a}
+:root[data-theme="dark"] .stale.crit{background:#331212;border-color:#7d2a2a;color:#f6b6b6}
+
 .wrap{max-width:1700px;margin:0 auto;padding-inline:16px;padding-block:20px 56px}
 .mast{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:flex-end;justify-content:space-between;
       padding-bottom:14px;border-bottom:2px solid var(--head)}
@@ -133,6 +160,7 @@ th.sorted.desc::after{content:" \25BC"}
 </style>
 
 <div class="wrap">
+  <div class="stale" id="stale" role="status" hidden></div>
   <header class="mast">
     <div>
       <h1>Store Performance</h1>
@@ -955,8 +983,39 @@ var r0=defaultRange(state.mode); state.dfrom=r0.dfrom; state.dto=r0.dto;
 document.getElementById("prov").textContent =
   "Built from the DSR folder on "+(D.generated||"")+" \u00b7 "+DATES.length+
   " trading days to "+periodLong(DATES[DATES.length-1],"D")+
-  " \u00b7 sales are BILL AMOUNT, inclusive of GST \u00b7 build 4.3 (2026-09-23) - publishes to GitHub Pages";
+  " \u00b7 sales are BILL AMOUNT, inclusive of GST \u00b7 build 4.4 (2026-09-28) - staleness banner, charset fix";
+
+/* ---- staleness banner -------------------------------------------------
+   D.generated is the date the laptop built this page, written as its local
+   calendar date. Compare it to the reader's local calendar date, both
+   normalised to UTC midnight so no timezone can shift the answer by a day
+   (the same trap that silently emptied WoW earlier).                     */
+(function staleness(){
+  var el=document.getElementById("stale");
+  if(!el || !D.generated || !/^\d{4}-\d{2}-\d{2}$/.test(D.generated)) return;
+  var p=D.generated.split("-");
+  var built=Date.UTC(+p[0],+p[1]-1,+p[2]);
+  var n=new Date();
+  var today=Date.UTC(n.getFullYear(),n.getMonth(),n.getDate());
+  var age=Math.round((today-built)/86400000);
+  if(!isFinite(age) || age<2) return;          /* same day or yesterday: fine */
+
+  var when=periodLong(D.generated,"D");
+  var days='<span class="age">'+age+' days</span>';
+  if(age>=4){
+    el.className="stale crit";
+    el.innerHTML='<b>These numbers are '+days+' out of date.</b> The morning '+
+      'refresh last succeeded on '+when+' and has not run since. Nothing on '+
+      'this page reflects trading after that date \u2014 check with the team '+
+      'before using any of it for a decision.';
+  }else{
+    el.className="stale warn";
+    el.innerHTML='<b>Last refreshed '+when+'</b>, '+days+' ago. The morning '+
+      'run looks to have been missed, so the latest trading days are not here yet.';
+  }
+  el.hidden=false;
+})();
+
 renderFilters(); renderRange(); render();
 })();
 </script>
-</body></html>
