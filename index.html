@@ -52,6 +52,11 @@ body{margin:0;background:var(--plane);color:var(--ink);font-family:var(--sans);f
    serving the last successful build for as long as nobody notices. This is
    the only thing standing between a failed 8am run and somebody reading
    week-old numbers as though they were this morning's. */
+/* Marks an LTL cell whose window was clipped to the store's opening date, so a
+   part-period figure is never mistaken for a full one. Hover gives the span. */
+sup.clip{color:var(--accent);font-weight:700;font-size:.85em;margin-left:1px;cursor:help}
+tr.total sup.clip{color:inherit}   /* the accent is too dim on the dark total row */
+
 .stale{display:block;margin:0 0 18px;padding:13px 16px;border-radius:7px;
   font-size:13.5px;line-height:1.5;font-weight:500;border:1px solid}
 .stale[hidden]{display:none}
@@ -351,18 +356,48 @@ function lyDate(dstr, mode){
   }
   return shiftDays(dstr,-364);
 }
+/* Like-to-like pair for one store over one period.
+
+   Every current-year day is paired with its last-year counterpart, and a pair
+   is kept only if the store was already trading on the last-year side. So a
+   store that opened part-way through the prior window is not thrown out - the
+   window is simply clipped to the part both years share. A store that opened
+   24 Sep 2025 compared over September therefore contributes 24-30 Sep on both
+   sides, not the whole month.
+
+   The consequence is that stores in the same table can be measured over
+   different spans, so the pair carries the number of paired days back with it
+   and the LTL tab shows it in a 'Days' column. Without that the totals look
+   like ordinary month figures when they are not. */
 function ltlPair(mode,k,s){
   var ds=periodDates(mode)[k]; if(!ds||!ds.length) return null;
   var idx=dayIndex(), st=STORES[s];
-  var lyFirst=lyDate(ds[0],mode);
-  if(!st.opened || st.opened>lyFirst) return null;   // not open for the whole prior span
-  var cur=0, ly=0;
+  if(!st.opened) return null;                  // no opening date: cannot judge
+  var cur=0, ly=0, n=0;
   for(var i=0;i<ds.length;i++){
+    var lyd=lyDate(ds[i],mode);
+    if(lyd < st.opened) continue;              // not trading then - drop the pair
     cur += idx[s+"|"+ds[i]] || 0;
-    ly  += idx[s+"|"+lyDate(ds[i],mode)] || 0;
+    ly  += idx[s+"|"+lyd] || 0;
+    n++;
   }
-  if(!ly) return null;
-  return [cur, ly];
+  if(!n || !ly) return null;
+  return [cur, ly, n];
+}
+
+/* Describes the clipping ltlPair applied, for the cell tooltip and the marker.
+   Returns null when nothing was clipped, so an unmarked cell always means the
+   store was measured across the whole period. */
+function ltlSpan(mode,k,s){
+  var ds=periodDates(mode)[k]; if(!ds||!ds.length) return null;
+  var st=STORES[s]; if(!st.opened) return null;
+  var kept=[];
+  for(var i=0;i<ds.length;i++){ if(lyDate(ds[i],mode) >= st.opened) kept.push(ds[i]); }
+  if(!kept.length || kept.length===ds.length) return null;
+  return "Measured over "+periodLong(kept[0],"D")+" – "+
+         periodLong(kept[kept.length-1],"D")+" only ("+kept.length+" of "+
+         ds.length+" days), matched to the same dates a year earlier, because "+
+         st.code+" opened "+periodLong(st.opened,"D")+".";
 }
 
 var ccache={};
@@ -493,7 +528,7 @@ var VIEWS=[
  {id:"sspd",tab:"SSPD",kind:"matrix",m:"sspd",
   note:"Sales per square foot per trading day. Normalises for both store size and how many days the store actually traded."},
  {id:"ltl",tab:"LTL",kind:"matrix",m:"ltl",
-  note:"Like-to-like on both store and period. Every date in the period is matched to its counterpart a year earlier and the two spans are summed day for day, so a part-finished month compares against the same part of last year. Blank where the store was not already open on the first day of that prior span. The total is the same basket on both sides of the division."},
+  note:"Like-to-like on both store and period. Every date is matched to its counterpart a year earlier and the two spans are summed day for day, so a part-finished month compares against the same part of last year. A store that opened part-way through the prior window is still included, with the window clipped to the days both years share — those cells carry a * and hovering gives the exact span. Blank only where the store had not opened at all by the end of the prior window. The total is the same basket on both sides of the division."},
  {id:"bills",tab:"Bills",kind:"matrix",m:"bills",
   note:"Transaction count. Bills are counted distinct per store per day, because bill numbers repeat across branches."},
  {id:"qty",tab:"Sold Qty",kind:"matrix",m:"qty",
@@ -601,8 +636,24 @@ function totalRow(cols, ks, all, idx, blocks){
   ks.forEach(function(k){
     var ki=all.indexOf(k);
     cols.forEach(function(c,i){
-      tr.appendChild(el("td", (blocks&&i===cols.length-1)?"blockend":null,
-                        M[c].fmt(total(c,state.mode,k,idx,all,ki))));
+      var cell_=el("td", (blocks&&i===cols.length-1)?"blockend":null,
+                   M[c].fmt(total(c,state.mode,k,idx,all,ki)));
+      if(c==="ltl"){
+        // Say so when the basket mixes full-period stores with clipped ones,
+        // otherwise the total reads as a straight month-on-month figure.
+        var clipped=[];
+        for(var j=0;j<idx.length;j++){
+          if(ltlPair(state.mode,k,idx[j]) && ltlSpan(state.mode,k,idx[j]))
+            clipped.push(STORES[idx[j]].code);
+        }
+        if(clipped.length){
+          cell_.appendChild(el("sup","clip","*"));
+          cell_.title="Includes "+clipped.length+" store"+(clipped.length>1?"s":"")+
+            " measured over part of the period only, clipped to the opening date: "+
+            clipped.join(", ")+".";
+        }
+      }
+      tr.appendChild(cell_);
     });
   });
   return tr;
@@ -668,6 +719,10 @@ function renderTable(v,host,blocks){
         var val=value(c,state.mode,k,s,all,ki);
         var cell_=el("td",(blocks&&i===cols.length-1)?"blockend":null,M[c].fmt(val));
         var stl=tintFor(c,val); if(stl) cell_.setAttribute("style",stl);
+        if(c==="ltl" && val!==null){
+          var sp=ltlSpan(state.mode,k,s);
+          if(sp){ cell_.appendChild(el("sup","clip","*")); cell_.title=sp; }
+        }
         tr.appendChild(cell_);
       });
     });
@@ -983,7 +1038,7 @@ var r0=defaultRange(state.mode); state.dfrom=r0.dfrom; state.dto=r0.dto;
 document.getElementById("prov").textContent =
   "Built from the DSR folder on "+(D.generated||"")+" \u00b7 "+DATES.length+
   " trading days to "+periodLong(DATES[DATES.length-1],"D")+
-  " \u00b7 sales are BILL AMOUNT, inclusive of GST \u00b7 build 4.4 (2026-09-28) - staleness banner, charset fix";
+  " \u00b7 sales are BILL AMOUNT, inclusive of GST \u00b7 build 4.5 (2026-09-29) - LTL clips to opening date";
 
 /* ---- staleness banner -------------------------------------------------
    D.generated is the date the laptop built this page, written as its local
