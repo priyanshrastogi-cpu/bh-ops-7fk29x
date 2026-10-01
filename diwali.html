@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Published to a public static host. The data is embedded in the page, so
+     anyone holding the URL can read all of it. These tags keep it out of
+     search results; that is discovery control, NOT access control. -->
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<meta name="googlebot" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Diwali Season Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --plane:#f2f2ef; --surface:#fcfcfb;
+  --ink:#0b0b0b; --ink-2:#52514e; --ink-3:#898781;
+  --rule:#e1e0d9; --rule-2:#c3c2b7; --edge:rgba(11,11,11,.10);
+  --accent:#2a78d6; --accent-soft:#eaf1fc;
+  --good:#0ca30c; --warn:#fab219; --crit:#d03b3b;
+  --head:#1f3864; --head-ink:#ffffff;
+  --fest:#c2410c; --fest-soft:#fdf0e7;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --plane:#0d0d0d; --surface:#1a1a19; --ink:#fff; --ink-2:#c3c2b7; --ink-3:#898781;
+  --rule:#2c2c2a; --rule-2:#383835; --edge:rgba(255,255,255,.10);
+  --accent:#3987e5; --accent-soft:#16283f; --head:#16233d; --head-ink:#e8eefb;
+  --fest:#fb923c; --fest-soft:#2a1508;
+}}
+:root[data-theme="dark"]{
+  --plane:#0d0d0d; --surface:#1a1a19; --ink:#fff; --ink-2:#c3c2b7; --ink-3:#898781;
+  --rule:#2c2c2a; --rule-2:#383835; --edge:rgba(255,255,255,.10);
+  --accent:#3987e5; --accent-soft:#16283f; --head:#16233d; --head-ink:#e8eefb;
+  --fest:#fb923c; --fest-soft:#2a1508;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45}
+.wrap{max-width:1700px;margin:0 auto;padding-inline:16px;padding-block:18px 56px}
+
+.stale{display:block;margin:0 0 16px;padding:13px 16px;border-radius:7px;font-size:13.5px;
+  line-height:1.5;font-weight:500;border:1px solid}
+.stale[hidden]{display:none}
+.stale b{font-weight:700} .stale .age{font-family:var(--mono);font-weight:600}
+.stale.warn{background:#fff8e6;border-color:#f0cf7a;color:#5c4404}
+.stale.crit{background:#fdecec;border-color:#e69a9a;color:#7d1d1d;font-size:14.5px;padding:16px 18px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stale.warn{background:#2e2409;border-color:#6b5514;color:#f6dc9a}
+ :root:not([data-theme="light"]) .stale.crit{background:#331212;border-color:#7d2a2a;color:#f6b6b6}}
+
+.mast{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;
+  padding-bottom:12px;border-bottom:2px solid var(--head);margin-bottom:16px}
+.mast h1{margin:0;font-size:21px;font-weight:700;letter-spacing:-.01em}
+.mast .sub{margin:3px 0 0;font-size:12.5px;color:var(--ink-2)}
+.mast .prov{margin:6px 0 0;font-size:11.5px;color:var(--ink-2);font-weight:500}
+.xlink{font-size:12.5px;font-weight:600;color:var(--accent);text-decoration:none;
+  border:1px solid var(--rule-2);border-radius:6px;padding:7px 12px;background:var(--surface);white-space:nowrap}
+.xlink:hover{border-color:var(--accent)}
+
+/* ---- summary tiles: the till-date view, first thing on the page ---- */
+.tiles{display:grid;gap:10px;margin-bottom:18px;
+  grid-template-columns:repeat(auto-fit,minmax(176px,1fr))}
+.tile{background:var(--surface);border:1px solid var(--rule);border-radius:9px;padding:12px 14px}
+.tile .k{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);font-weight:600}
+.tile .v{font-family:var(--mono);font-size:22px;font-weight:600;margin-top:5px;letter-spacing:-.02em}
+.tile .n{font-size:11.5px;color:var(--ink-2);margin-top:3px}
+.tile.hero{background:var(--fest-soft);border-color:var(--fest)}
+.tile.hero .v{color:var(--fest);font-size:27px}
+.v.pos{color:var(--good)} .v.neg{color:var(--crit)}
+
+.bar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin-bottom:14px}
+.ctl{display:flex;align-items:center;gap:7px}
+.ctl label{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);font-weight:600}
+select,input[type=text]{font-family:var(--sans);font-size:13px;padding:6px 9px;border:1px solid var(--rule-2);
+  border-radius:6px;background:var(--surface);color:var(--ink)}
+button{font-family:var(--sans);font-size:13px;padding:6px 11px;border:1px solid var(--rule-2);
+  border-radius:6px;background:var(--surface);color:var(--ink);cursor:pointer}
+button:hover{border-color:var(--accent)}
+
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:0}
+.tabs button{border-radius:7px 7px 0 0;border-bottom-color:transparent;font-weight:600}
+.tabs button[aria-pressed="true"]{background:var(--head);color:var(--head-ink);border-color:var(--head)}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:0 9px 9px 9px;padding:16px}
+.panel h2{margin:0 0 6px;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.panel .note{margin:0 0 14px;font-size:12.5px;color:var(--ink-2);max-width:none}
+
+.scroll{overflow:auto;max-height:70vh}
+table{border-collapse:separate;border-spacing:0;font-size:12.5px;width:100%}
+th,td{padding:6px 9px;border-bottom:1px solid var(--rule);white-space:nowrap;text-align:right}
+thead th{position:sticky;top:0;z-index:2;background:var(--head);color:var(--head-ink);font-weight:600;
+  font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+th.sortable{cursor:pointer} th.sorted::after{content:" \25B2";font-size:9px} th.sorted.desc::after{content:" \25BC"}
+td.code,th.stick1{text-align:left;font-family:var(--mono);font-size:11.5px}
+td.name{text-align:left;font-size:11.5px;color:var(--ink-2)}
+tbody tr.total{background:var(--head);color:var(--head-ink);font-weight:700}
+tbody tr.total td{border-bottom:none}
+tbody tr:not(.total):nth-child(even){background:rgba(0,0,0,.015)}
+td.num{font-family:var(--mono)}
+.pill{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+  padding:2px 6px;border-radius:4px;background:var(--accent-soft);color:var(--accent)}
+sup.clip{color:var(--accent);font-weight:700;font-size:.85em;margin-left:1px;cursor:help}
+tr.total sup.clip{color:inherit}   /* the accent is too dim on the dark total row */
+.empty{padding:28px;text-align:center;color:var(--ink-3)}
+svg .grid{stroke:var(--rule);stroke-width:1}
+svg .lbl{fill:var(--ink-3);font-size:10px;font-family:var(--sans)}
+.legend{display:flex;gap:18px;font-size:12px;color:var(--ink-2);margin:4px 0 10px}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
+@media print{
+  body{background:#fff} .noprint{display:none!important}
+  .panel{border:none;padding:0} .scroll{overflow:visible;max-height:none}
+  thead th{background:var(--head)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  @page{size:A4 landscape;margin:8mm}
+}
+</style>
+
+<div class="wrap">
+  <div class="stale" id="stale" role="status" hidden></div>
+  <header class="mast">
+    <div>
+      <h1>Diwali Season Review</h1>
+      <p class="sub">The Bear House &middot; 25 Sep &ndash; 8 Nov 2026 &middot; 45 days to Diwali</p>
+      <p class="prov" id="prov">&mdash;</p>
+    </div>
+    <a class="xlink noprint" id="mainlink" href="index.html">&larr; Main ops dashboard</a>
+  </header>
+
+  <div class="tiles" id="tiles"></div>
+
+  <div class="bar noprint">
+    <div class="ctl"><label for="fcl">Cluster</label><select id="fcl"></select></div>
+    <div class="ctl"><label for="fst">Store</label><input type="text" id="fst" list="stlist" placeholder="type or pick" size="24"><datalist id="stlist"></datalist></div>
+    <button type="button" id="clear">Clear</button>
+    <button type="button" id="pdf">Print / Save PDF</button>
+  </div>
+
+  <div class="tabs noprint" id="tabs"></div>
+  <div class="panel" id="panel"></div>
+</div>
+
+<script id="payload" type="application/json">{"generated":"2026-10-01","version":"4.6.2 (2026-10-01) - Diwali season page, like-to-like LY","start":"2026-09-25","end":"2026-11-08","last":"2026-09-30","lyShift":385,"days":["2026-09-25","2026-09-26","2026-09-27","2026-09-28","2026-09-29","2026-09-30","2026-10-01","2026-10-02","2026-10-03","2026-10-04","2026-10-05","2026-10-06","2026-10-07","2026-10-08","2026-10-09","2026-10-10","2026-10-11","2026-10-12","2026-10-13","2026-10-14","2026-10-15","2026-10-16","2026-10-17","2026-10-18","2026-10-19","2026-10-20","2026-10-21","2026-10-22","2026-10-23","2026-10-24","2026-10-25","2026-10-26","2026-10-27","2026-10-28","2026-10-29","2026-10-30","2026-10-31","2026-11-01","2026-11-02","2026-11-03","2026-11-04","2026-11-05","2026-11-06","2026-11-07","2026-11-08"],"stores":[{"code":"001-BHARTIYA-BLR","cluster":"Sudhir (KA & KL)","city":"Bangalore","region":"South","opened":"2025-01-23","isNew":false,"firstTarget":"2026-09-25"},{"code":"002-BANJARA-HYD","cluster":"Yoga (TS)","city":"Hyderabad","region":"South","opened":"2025-03-28","isNew":false,"firstTarget":"2026-09-25"},{"code":"003_KORMANAGALA_BLR","cluster":"Sudhir (KA & KL)","city":"Bangalore","region":"South","opened":"2025-06-16","isNew":false,"firstTarget":"2026-09-25"},{"code":"004_AMANORA_PN","cluster":"Naweed (West & Central)","city":"Pune","region":"West","opened":"2025-06-27","isNew":false,"firstTarget":"2026-09-25"},{"code":"005-PMC-KURLA-MUM","cluster":"Naweed (West & Central)","city":"Mumbai","region":"West","opened":"2025-08-23","isNew":false,"firstTarget":"2026-09-25"},{"code":"006-SECTOR 17-CHANDIGARH","cluster":"Bappa (North)","city":"Chandigarh","region":"North","opened":"2025-09-24","isNew":false,"firstTarget":"2026-09-25"},{"code":"007-SARATH CITY -HYD","cluster":"Yoga (TS)","city":"Hyderabad","region":"South","opened":"2025-09-26","isNew":false,"firstTarget":"2026-09-25"},{"code":"009-CHIKKAJALA-BLR","cluster":"Sudhir (KA & KL)","city":"Bangalore","region":"South","opened":"2025-10-23","isNew":false,"firstTarget":"2026-09-25"},{"code":"010-PACIFIC JASOLA-DL","cluster":"Bappa (North)","city":"Delhi","region":"North","opened":"2025-01-25","isNew":false,"firstTarget":"2026-09-25"},{"code":"011-EXPRESS AVENUE MALL-CHE","cluster":"Umar (TN)","city":"Chennai","region":"South","opened":"2025-11-13","isNew":false,"firstTarget":"2026-09-25"},{"code":"012-PHOENIX CITADEL-INDR","cluster":"Naweed (West & Central)","city":"Indore","region":"Central","opened":"2025-11-10","isNew":false,"firstTarget":"2026-09-25"},{"code":"013-LULU MALL-BLR","cluster":"Sudhir (KA & KL)","city":"Bangalore","region":"South","opened":"2025-11-01","isNew":false,"firstTarget":"2026-09-25"},{"code":"014-PACIFIC FARIDABAD NIT","cluster":"Bappa (North)","city":"Faridabad","region":"North","opened":"2025-11-29","isNew":false,"firstTarget":"2026-09-25"},{"code":"015-LAKE SHORE MALL-HYD","cluster":"Yoga (TS)","city":"Hyderabad","region":"South","opened":"2025-12-11","isNew":false,"firstTarget":"2026-09-25"},{"code":"016-HILITE MALL-KERALA","cluster":"Sudhir (KA & KL)","city":"Calicut","region":"South","opened":"2025-12-21","isNew":false,"firstTarget":"2026-09-25"},{"code":"017-JANAKPURI-DL","cluster":"Bappa (North)","city":"Delhi","region":"North","opened":"2026-02-06","isNew":false,"firstTarget":"2026-09-25"},{"code":"018-ATTIBELE-BLR","cluster":"Sudhir (KA & KL)","city":"Bangalore","region":"South","opened":"2026-02-25","isNew":false,"firstTarget":"2026-09-25"},{"code":"019-PHOENIX CHENNAI","cluster":"Umar (TN)","city":"Chennai","region":"South","opened":"2026-03-20","isNew":false,"firstTarget":"2026-09-25"},{"code":"020-FELIX PLAZA GURGAON","cluster":"Rohit (HRY)","city":"Gurgaon","region":"North","opened":"2026-03-26","isNew":false,"firstTarget":"2026-09-25"},{"code":"021-SECTOR 29 GURGAON","cluster":"Rohit (HRY)","city":"Gurgaon","region":"North","opened":"2026-05-08","isNew":false,"firstTarget":"2026-09-25"},{"code":"022-Z SQUARE MALL-KANPUR","cluster":"Bappa (North)","city":"Kanpur","region":"North","opened":"2026-05-22","isNew":false,"firstTarget":"2026-09-25"},{"code":"023-AIRIA MALL-GURGAON","cluster":"Rohit (HRY)","city":"Gurgaon","region":"North","opened":"2026-06-07","isNew":false,"firstTarget":"2026-09-25"},{"code":"024-TOLICHOWKI-HYD","cluster":"Yoga (TS)","city":"Hyderabad","region":"South","opened":"2026-07-05","isNew":false,"firstTarget":"2026-09-25"},{"code":"025-HIMAYATNAGAR-HYD","cluster":"Yoga (TS)","city":"Hyderabad","region":"South","opened":"2026-07-16","isNew":false,"firstTarget":"2026-09-25"},{"code":"026-Gold Dust Patiala","cluster":"Bappa (North)","city":"Patiala","region":"North","opened":"2026-08-01","isNew":false,"firstTarget":"2026-09-25"},{"code":"027-CREEK VILLAGE DORAHA","cluster":"Bappa (North)","city":"Ludhiana","region":"North","opened":"2026-08-26","isNew":false,"firstTarget":"2026-09-25"},{"code":"028-BHUMI WORLD BHIWANDI","cluster":"Naweed (West & Central)","city":"Mumbai","region":"West","opened":"2026-08-13","isNew":false,"firstTarget":"2026-09-25"},{"code":"029-ZORA MALL RAIPUR","cluster":"Naweed (West & Central)","city":"Raipur","region":"Central","opened":"2026-08-14","isNew":false,"firstTarget":"2026-09-25"},{"code":"030-DB MALL BHOPAL","cluster":"Naweed (West & Central)","city":"Bhopal","region":"Central","opened":"2026-08-15","isNew":false,"firstTarget":"2026-09-25"},{"code":"031-INORBIT MALL HUBBALLI","cluster":"Sudhir (KA & KL)","city":"Hubballi","region":"South","opened":"2026-09-04","isNew":false,"firstTarget":"2026-09-25"},{"code":"032-FIZA-MALL-MANGALORE","cluster":"Sudhir (KA & KL)","city":"Mangalore","region":"South","opened":"2026-09-17","isNew":false,"firstTarget":"2026-09-25"},{"code":"033-LINKING ROAD-MUMBAI","cluster":"Naweed (West & Central)","city":"Mumbai","region":"West","opened":"2026-09-27","isNew":false,"firstTarget":"2026-09-27"},{"code":"034-PIPLOD SURAT","cluster":"Naweed (West & Central)","city":"","region":"","opened":"","isNew":true,"firstTarget":"2026-10-11"},{"code":"035-ANAM2 AHMEDABAD","cluster":"Naweed (West & Central)","city":"","region":"","opened":"","isNew":true,"firstTarget":"2026-10-11"},{"code":"036-DB GWALIOR","cluster":"Naweed (West & Central)","city":"","region":"","opened":"","isNew":true,"firstTarget":"2026-10-11"},{"code":"037-PACIFIC JAIPUR","cluster":"Bappa (North)","city":"","region":"","opened":"","isNew":true,"firstTarget":"2026-10-18"}],"tgt":[[50000,75000,100000,30000,30000,30000,30000,40000,70000,100000,30000,30000,30000,30000,40000,70000,100000,40000,40000,40000,40000,50000,80000,110000,70000,70000,40000,40000,50000,100000,120000,50000,50000,50000,50000,50000,110000,140000,60000,60000,60000,60000,80000,120000,35000],[50000,80000,110000,30000,30000,30000,30000,45000,80000,110000,30000,30000,30000,30000,50000,80000,120000,70000,70000,70000,70000,80000,120000,140000,90000,75000,40000,40000,50000,80000,100000,40000,40000,50000,50000,50000,100000,120000,60000,60000,60000,60000,80000,120000,50000],[60000,90000,120000,30000,30000,30000,30000,50000,90000,120000,30000,30000,30000,30000,50000,90000,130000,50000,50000,50000,50000,50000,110000,150000,70000,70000,50000,50000,50000,100000,120000,60000,60000,60000,60000,70000,120000,150000,90000,90000,90000,90000,120000,150000,30000],[45000,70000,110000,30000,30000,30000,40000,50000,80000,120000,40000,40000,40000,40000,40000,100000,120000,45000,45000,45000,45000,50000,90000,140000,60000,80000,60000,60000,62500,120000,150000,100000,100000,100000,100000,120000,160000,200000,120000,120000,130000,140000,160000,210000,40000],[50000,70000,100000,30000,30000,35000,35000,45000,60000,90000,30000,30000,30000,30000,30000,60000,100000,35000,35000,35000,35000,35000,80000,110000,45000,45000,35000,35000,50000,90000,120000,45000,45000,45000,45000,60000,120000,160000,80000,80000,80000,100000,140000,170000,30000],[45000,70000,100000,40000,40000,40000,40000,45000,70000,100000,40000,40000,40000,40000,45000,70000,100000,45000,45000,45000,45000,55000,75000,120000,50000,50000,50000,50000,60000,105000,140000,60000,60000,60000,60000,70000,150000,200000,110000,110000,110000,130000,150000,200000,30000],[100000,150000,190000,80000,80000,80000,90000,90000,120000,160000,90000,90000,90000,100000,100000,150000,200000,110000,120000,130000,140000,170000,240000,320000,240000,150000,80000,80000,80000,140000,200000,100000,100000,100000,100000,100000,180000,240000,120000,130000,150000,170000,230000,260000,60000],[45000,60000,90000,30000,30000,35000,30000,50000,60000,90000,30000,30000,30000,30000,30000,60000,90000,35000,35000,35000,35000,35000,80000,110000,40000,40000,40000,40000,40000,90000,120000,40000,40000,40000,40000,40000,100000,130000,50000,55000,80000,100000,120000,140000,30000],[45000,60000,90000,30000,30000,35000,35000,45000,60000,90000,30000,30000,35000,35000,45000,60000,100000,40000,40000,40000,40000,45000,60000,100000,45000,45000,45000,45000,50000,80000,120000,60000,60000,60000,60000,60000,140000,160000,90000,100000,110000,120000,140000,160000,30000],[50000,100000,120000,50000,50000,50000,50000,50000,110000,130000,50000,50000,50000,50000,50000,100000,130000,55000,55000,55000,65000,80000,130000,180000,130000,120000,70000,80000,100000,160000,200000,110000,110000,120000,120000,130000,170000,220000,120000,120000,130000,140000,170000,220000,50000],[30000,50000,60000,20000,25000,25000,25000,30000,50000,60000,20000,25000,25000,25000,30000,50000,70000,25000,30000,30000,30000,35000,55000,70000,30000,30000,30000,30000,40000,60000,70000,40000,40000,40000,40000,50000,80000,100000,55000,55000,55000,60000,80000,100000,20000],[40000,70000,95000,30000,30000,30000,30000,40000,55000,70000,30000,30000,30000,30000,40000,55000,80000,40000,40000,40000,40000,50000,80000,100000,40000,40000,40000,50000,60000,90000,120000,60000,60000,60000,60000,70000,100000,130000,60000,60000,60000,60000,90000,120000,20000],[45000,70000,90000,30000,30000,35000,35000,50000,60000,90000,30000,30000,30000,30000,30000,80000,100000,35000,35000,35000,35000,40000,90000,110000,40000,40000,40000,40000,50000,90000,120000,55000,55000,55000,55000,65000,125000,155000,80000,90000,100000,110000,150000,190000,50000],[80000,140000,170000,60000,70000,70000,70000,90000,120000,170000,70000,70000,70000,70000,70000,120000,160000,100000,100000,120000,140000,160000,200000,240000,180000,180000,80000,80000,80000,150000,200000,100000,100000,100000,100000,100000,160000,220000,100000,110000,120000,130000,160000,220000,50000],[30000,50000,60000,20000,25000,25000,25000,30000,50000,60000,20000,25000,25000,25000,30000,40000,60000,30000,30000,30000,30000,35000,50000,70000,30000,30000,30000,30000,35000,50000,70000,30000,30000,30000,30000,35000,50000,70000,30000,30000,30000,30000,35000,50000,70000],[120000,170000,190000,70000,70000,80000,60000,70000,120000,150000,60000,60000,60000,60000,70000,120000,150000,70000,80000,80000,80000,100000,150000,220000,120000,150000,100000,100000,110000,150000,220000,120000,120000,120000,130000,150000,260000,310000,160000,160000,180000,200000,260000,320000,100000],[40000,60000,70000,20000,25000,25000,25000,35000,60000,70000,25000,25000,25000,25000,35000,75000,90000,25000,30000,30000,30000,50000,75000,90000,30000,30000,30000,30000,50000,70000,90000,40000,40000,40000,40000,80000,90000,100000,40000,50000,50000,50000,70000,80000,40000],[50000,100000,120000,50000,50000,50000,50000,50000,110000,130000,50000,50000,50000,50000,50000,100000,130000,50000,50000,50000,60000,80000,120000,170000,125000,115000,70000,80000,100000,160000,200000,110000,110000,120000,120000,130000,170000,220000,120000,120000,130000,140000,170000,220000,50000],[15000,27500,30000,10000,10000,10000,10000,20000,20000,30000,10000,10000,10000,10000,15000,25000,30000,15000,15000,15000,15000,20000,30000,40000,20000,20000,20000,20000,25000,30000,35000,25000,25000,25000,25000,30000,40000,40000,25000,25000,25000,25000,32500,40000,5000],[70000,120000,140000,50000,50000,70000,55000,65000,110000,130000,50000,55000,55000,55000,70000,120000,140000,60000,60000,60000,60000,80000,130000,150000,60000,60000,60000,60000,80000,140000,160000,100000,100000,100000,100000,100000,160000,220000,120000,130000,140000,150000,190000,225000,40000],[30000,50000,60000,20000,25000,25000,25000,30000,50000,60000,20000,25000,25000,25000,30000,50000,60000,25000,30000,30000,30000,50000,60000,70000,30000,40000,40000,40000,60000,80000,90000,50000,60000,60000,60000,70000,120000,150000,80000,80000,90000,110000,140000,165000,30000],[60000,70000,100000,40000,40000,50000,30000,45000,60000,90000,30000,30000,30000,30000,45000,60000,100000,50000,50000,50000,50000,80000,100000,120000,70000,70000,70000,70000,70000,100000,130000,75000,75000,80000,80000,90000,130000,150000,100000,100000,100000,110000,120000,160000,40000],[45000,70000,100000,40000,40000,40000,30000,45000,60000,90000,30000,30000,30000,30000,45000,70000,110000,70000,70000,70000,80000,80000,120000,150000,115000,90000,40000,40000,50000,80000,100000,40000,40000,50000,50000,50000,100000,120000,60000,60000,60000,60000,80000,120000,50000],[100000,140000,160000,70000,80000,80000,70000,90000,120000,170000,70000,70000,70000,70000,70000,120000,160000,100000,100000,120000,140000,160000,200000,240000,180000,180000,80000,80000,80000,150000,200000,100000,100000,100000,100000,100000,150000,210000,100000,110000,120000,130000,150000,210000,50000],[45000,60000,90000,30000,30000,35000,35000,45000,60000,90000,30000,30000,35000,35000,45000,60000,90000,40000,45000,45000,45000,45000,60000,90000,60000,50000,50000,50000,60000,70000,100000,60000,70000,70000,70000,70000,90000,110000,80000,80000,80000,80000,90000,100000,40000],[45000,60000,90000,30000,30000,30000,30000,40000,50000,80000,25000,25000,30000,30000,40000,50000,80000,40000,45000,45000,45000,45000,60000,90000,60000,50000,50000,50000,60000,70000,100000,60000,70000,70000,70000,70000,90000,110000,80000,80000,80000,80000,90000,100000,40000],[60000,120000,140000,40000,40000,40000,55000,60000,90000,135000,50000,50000,55000,55000,60000,120000,160000,60000,60000,60000,60000,70000,130000,180000,120000,120000,80000,80000,80000,160000,220000,100000,100000,100000,120000,140000,200000,250000,150000,160000,170000,180000,220000,250000,50000],[50000,100000,120000,40000,40000,40000,30000,40000,90000,100000,30000,30000,30000,30000,40000,100000,120000,50000,50000,50000,50000,60000,110000,130000,50000,50000,60000,60000,70000,110000,130000,60000,60000,70000,70000,80000,120000,150000,100000,100000,110000,110000,120000,150000,40000],[30000,50000,60000,20000,25000,25000,25000,30000,50000,60000,20000,25000,25000,25000,30000,50000,70000,30000,30000,30000,30000,35000,60000,80000,35000,35000,35000,40000,50000,70000,90000,40000,50000,50000,50000,70000,90000,110000,70000,80000,80000,80000,100000,140000,20000],[40000,55000,70000,30000,30000,30000,30000,40000,55000,70000,30000,30000,30000,30000,40000,55000,70000,30000,30000,30000,30000,40000,55000,70000,40000,50000,50000,50000,60000,80000,100000,70000,70000,70000,70000,80000,100000,120000,80000,80000,80000,80000,100000,120000,30000],[45000,60000,90000,30000,30000,30000,30000,45000,60000,90000,30000,30000,30000,30000,45000,60000,100000,50000,50000,50000,50000,70000,110000,120000,70000,60000,30000,30000,55000,70000,110000,35000,35000,35000,35000,60000,80000,100000,50000,50000,50000,50000,80000,90000,90000],[0,0,120000,50000,50000,50000,50000,50000,120000,150000,50000,50000,50000,50000,50000,120000,150000,50000,50000,50000,60000,80000,140000,180000,130000,110000,90000,90000,100000,160000,200000,110000,110000,120000,120000,130000,170000,220000,120000,120000,130000,150000,180000,220000,50000],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,130000,55000,55000,55000,65000,80000,130000,180000,130000,120000,70000,80000,100000,160000,200000,110000,110000,120000,120000,130000,170000,220000,120000,120000,130000,140000,170000,220000,50000],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,140000,60000,60000,60000,70000,90000,140000,180000,120000,120000,70000,80000,100000,160000,200000,110000,110000,120000,120000,140000,180000,220000,120000,120000,130000,140000,180000,220000,50000],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,70000,30000,30000,30000,30000,35000,60000,80000,35000,35000,35000,40000,50000,70000,90000,40000,50000,50000,50000,70000,90000,110000,70000,80000,80000,80000,100000,140000,20000],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,170000,125000,115000,70000,80000,100000,160000,200000,110000,110000,120000,120000,130000,170000,220000,120000,120000,130000,140000,170000,220000,50000]],"act":[[21689,63072,57974,18292,32886,19090,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[64272,59873,98476,29987,36782,9496,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[50374,124190,88862,11295,86890,61213,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,150530,30186,22290,65874,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[6897,30687,124970,10195,7097,33584,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[27287,36483,55575,26689,6497,33186,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[73765,119197,173825,77050,55675,95560,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[45579,31524,53495,11895,14694,19110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[42480,20549,63711,12156,21750,10218,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[39282,111251,281375,69470,39883,58474,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[49944,36945,47755,8592,12494,13549,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[49576,27018,43979,11995,9296,9996,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[19591,34018,80663,6097,29037,29885,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[55075,151031,159429,57696,49878,53187,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[26211,21291,16893,17891,29386,37282,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[62392,61373,60873,10195,12395,88161,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[37372,5697,35182,21991,25989,7997,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[50675,72867,139838,25888,36886,8496,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[15793,26088,15193,0,4598,2455,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[97191,76714,139348,15292,40234,39798,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,29086,11395,9396,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[16592,46179,100556,19891,22190,5232,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[21049,37001,51429,20751,7416,16231,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,80616,164922,98737,48454,71263,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[20460,24049,57124,16972,67847,18211,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[21970,8047,62209,10185,0,10805,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[39821,30566,91955,4697,10833,3118,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[12574,6713,34593,8581,20311,29636,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[47878,14893,20990,17492,19591,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[45036,81946,40246,14193,16373,12923,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[19590,72733,60634,13304,38113,18112,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[1899,0,59773,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],"ly":[[36630,81454,89737,51123,36365,16862,15692,43449,58155,123364,43157,14701,15892,6497,80198,40179,88042,24475,30721,32010,36005,66729,56763,32990,23675,21999,56574,43525,31308,79235,61586,35535,12589,27256,23691,44364,80026,79628,23148,26527,45715,45619,31657,122506,112365],[34931,34470,37075,27764,19770,7396,28111,71167,35804,67481,11953,25238,13113,26809,78907,23375,37435,15568,39966,36768,17926,41016,84895,93896,40593,65863,83751,60093,36877,5195,60643,17917,63296,11649,43162,0,68021,88732,38683,31499,22817,36927,16426,85723,128436],[71105,72922,101366,31668,22539,12118,28311,22244,100582,75131,34553,32807,34807,9995,16807,60515,131879,18783,18655,20311,31865,43353,57484,75016,23227,49601,57596,69602,45849,103144,120134,19931,27323,69963,14415,53409,101440,167263,18043,52959,35152,31999,40822,95030,148063],[37784,103579,129240,34792,27325,28214,15970,27715,87957,104103,24877,34129,32983,11495,18680,81138,138716,16073,23213,14119,58654,24004,108048,113946,13435,25448,42706,85285,33860,121904,132492,0,46296,14877,97204,29856,206724,202929,61900,39797,81315,119234,91682,131226,181822],[17269,28223,80592,11993,12552,16550,10793,12712,29204,56066,17206,4558,9671,41083,11353,45474,46969,22953,15995,6396,22882,14530,62192,48137,6388,15127,17038,54372,31048,77378,72043,6778,7046,21131,11777,0,70167,170266,21435,11303,39289,46326,32969,54461,52468],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,30225,20948,9515,21189,56128,38696,10156,49896,49624,29044,29022,74685,19368,26145,12952,28625,37898,32862,57930,20950,143328,179866,189145,170136,142668,200452],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2718,155427,205318,50850,103221,113851,68114,23744,97696,116975,28383,39818,69002,84988,49731,189811,117118,77559,29544,52991,60055,51582,141547,170081],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]}</script>
+<script>
+(function(){
+"use strict";
+var D=JSON.parse(document.getElementById("payload").textContent);
+var DAYS=D.days, S=D.stores, TG=D.tgt, AC=D.act, LY=D.ly;
+var MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+/* ---------- helpers ---------- */
+function utc(s){var p=s.split("-");return Date.UTC(+p[0],+p[1]-1,+p[2]);}
+function dlabel(s){var p=s.split("-");return (+p[2])+" "+MON[+p[1]-1];}
+function dlong(s){var p=s.split("-");return (+p[2])+" "+MON[+p[1]-1]+" "+p[0];}
+/* Indian money shorthand - a review reads "1.21 Cr" far faster than 12,085,250 */
+function money(v){
+  if(v===null||v===undefined||!isFinite(v)) return "–";
+  var a=Math.abs(v), s=v<0?"-":"";
+  if(a>=1e7) return s+"₹"+(a/1e7).toFixed(2)+" Cr";
+  if(a>=1e5) return s+"₹"+(a/1e5).toFixed(1)+" L";
+  return s+"₹"+Math.round(a).toLocaleString("en-IN");
+}
+function rupee(v){ if(v===null||v===undefined||!isFinite(v)) return "–";
+  /* the sign belongs before the symbol: -₹1,234, never ₹-1,234 */
+  return (v<0?"-":"")+"₹"+Math.round(Math.abs(v)).toLocaleString("en-IN"); }
+function pct(v){ return (v===null||!isFinite(v))?"–":(v*100).toFixed(1)+"%"; }
+function spct(v){ return (v===null||!isFinite(v))?"–":(v>=0?"+":"")+(v*100).toFixed(1)+"%"; }
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e;}
+
+/* ---------- season geometry ---------- */
+var LASTI=(function(){ var i=DAYS.indexOf(D.last); if(i>=0) return i;
+  for(var j=DAYS.length-1;j>=0;j--) if(DAYS[j]<=D.last) return j; return -1; })();
+var ELAPSED=LASTI+1, REMAIN=DAYS.length-ELAPSED;
+
+var state={cl:"",st:"",tab:"summary",sort:{}};
+function active(){
+  var out=[];
+  for(var i=0;i<S.length;i++){
+    if(state.cl && S[i].cluster!==state.cl) continue;
+    if(state.st && S[i].code!==state.st) continue;
+    out.push(i);
+  }
+  return out;
+}
+/* Sum a matrix over the selected stores, between two day indices inclusive. */
+function sum(M,idx,a,b){
+  var t=0;
+  for(var i=0;i<idx.length;i++){ var row=M[idx[i]];
+    for(var d=a;d<=b;d++) t+=row[d]||0; }
+  return t;
+}
+function storeSum(M,s,a,b){ var t=0,row=M[s]; for(var d=a;d<=b;d++) t+=row[d]||0; return t; }
+
+/* ---- like-to-like, matching the main dashboard ---------------------------
+   Each current-season day is paired with its counterpart D.lyShift days back,
+   and a pair is kept only if the store was already trading on the last-year
+   side. A store that opened part-way through the prior window is not dropped -
+   its window is clipped to the days both years share.
+
+   Totals use that same basket on both sides of the division. Summing every
+   store's sales against whatever last year happened to hold would measure 36
+   stores against a base that did not contain most of them, which is how a
+   festival season invents a +485% that means nothing. */
+function shiftDays(dstr,n){
+  var p=dstr.split("-");
+  var t=new Date(Date.UTC(+p[0],+p[1]-1,+p[2])+n*86400000);
+  return t.getUTCFullYear()+"-"+String(t.getUTCMonth()+1).padStart(2,"0")
+        +"-"+String(t.getUTCDate()).padStart(2,"0");
+}
+function lyDate(dstr){ return shiftDays(dstr,-D.lyShift); }
+
+function ltlPair(s,a,b){
+  var st=S[s];
+  if(!st.opened||a>b) return null;
+  var cur=0, ly=0, n=0;
+  for(var d=a;d<=b;d++){
+    if(lyDate(DAYS[d]) < st.opened) continue;   // not trading then - drop the pair
+    cur+=AC[s][d]||0; ly+=LY[s][d]||0; n++;
+  }
+  if(!n||!ly) return null;
+  return [cur,ly,n];
+}
+/* The basket: only the stores that have a comparable prior period, both sides. */
+function ltlBasket(idx,a,b){
+  var cur=0, ly=0, n=0, clipped=0, span=b-a+1;
+  for(var i=0;i<idx.length;i++){
+    var pr=ltlPair(idx[i],a,b);
+    if(!pr) continue;
+    cur+=pr[0]; ly+=pr[1]; n++;
+    if(pr[2]<span) clipped++;
+  }
+  return n ? {cur:cur,ly:ly,n:n,clipped:clipped,growth:ly?cur/ly-1:null} : null;
+}
+
+function headline(){
+  var idx=active(), n=DAYS.length-1;
+  var seasonT = sum(TG,idx,0,n);
+  var tToDate = ELAPSED>0 ? sum(TG,idx,0,LASTI) : 0;
+  var aToDate = ELAPSED>0 ? sum(AC,idx,0,LASTI) : 0;
+  var ltl = ELAPSED>0 ? ltlBasket(idx,0,LASTI) : null;
+  return {
+    seasonT:seasonT, tToDate:tToDate, aToDate:aToDate,
+    ach: tToDate? aToDate/tToDate : null,
+    gap: aToDate - tToDate,
+    banked: seasonT? aToDate/seasonT : null,
+    rate: ELAPSED? aToDate/ELAPSED : null,
+    need: REMAIN>0 ? Math.max(seasonT-aToDate,0)/REMAIN : null,
+    ltl: ltl, nStores: idx.length,
+    growth: ltl ? ltl.growth : null
+  };
+}
+
+function renderTiles(){
+  var h=headline(), host=document.getElementById("tiles");
+  host.innerHTML="";
+  function tile(k,v,n,cls,hero){
+    var t=el("div","tile"+(hero?" hero":""));
+    t.appendChild(el("div","k",k));
+    t.appendChild(el("div","v"+(cls?" "+cls:""),v));
+    if(n) t.appendChild(el("div","n",n));
+    host.appendChild(t);
+  }
+  var achCls = h.ach===null ? "" : (h.ach>=1?"pos":(h.ach>=0.9?"":"neg"));
+  tile("Achievement to date", pct(h.ach), "day "+ELAPSED+" of "+DAYS.length+" · "+REMAIN+" left", achCls, true);
+  tile("Actual to date", money(h.aToDate), "against "+money(h.tToDate)+" target");
+  tile("Gap to date", money(h.gap), h.gap>=0?"ahead of plan":"behind plan", h.gap>=0?"pos":"neg");
+  tile("Season target", money(h.seasonT), pct(h.banked)+" banked so far");
+  tile("Run-rate so far", money(h.rate)+"/d", "over "+ELAPSED+" day"+(ELAPSED===1?"":"s"));
+  tile("Needed for balance", h.need===null?"–":money(h.need)+"/d",
+       (h.need&&h.rate)?(h.need/h.rate).toFixed(2)+"× current rate":"",
+       (h.need&&h.rate&&h.need/h.rate>1.25)?"neg":"");
+  tile("LTL vs last year", spct(h.growth),
+       h.ltl ? h.ltl.n+" of "+h.nStores+" stores comparable"
+             : "no store has a comparable prior period yet",
+       h.growth===null?"":(h.growth>=0?"pos":"neg"));
+}
+
+/* ---------- pace chart: where the gap opened, and whether it is closing ---- */
+function renderPace(host){
+  var idx=active(), W=1000, H=260, L=64, R=16, T=14, B=26;
+  var ct=[], ca=[], runT=0, runA=0;
+  for(var d=0;d<DAYS.length;d++){
+    runT+=sum(TG,idx,d,d); ct.push(runT);
+    if(d<=LASTI){ runA+=sum(AC,idx,d,d); ca.push(runA); }
+  }
+  var max=Math.max(ct[ct.length-1]||1, ca.length?ca[ca.length-1]:0)*1.04;
+  function X(i){ return L+(W-L-R)*(DAYS.length<2?0:i/(DAYS.length-1)); }
+  function Y(v){ return T+(H-T-B)*(1-(v/max)); }
+  function path(arr){ var p=""; for(var i=0;i<arr.length;i++) p+=(i?"L":"M")+X(i).toFixed(1)+" "+Y(arr[i]).toFixed(1); return p; }
+
+  /* width 100% with a fixed height letterboxes the drawing, because the default
+   preserveAspectRatio fits the height first. Letting height follow the width
+   keeps the chart filling the panel at any screen size. */
+  var svg='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;display:block" role="img" aria-label="Cumulative target against cumulative actual">';
+  for(var g=0;g<=4;g++){
+    var v=max*g/4, y=Y(v);
+    svg+='<line class="grid" x1="'+L+'" y1="'+y.toFixed(1)+'" x2="'+(W-R)+'" y2="'+y.toFixed(1)+'"/>'
+       + '<text class="lbl" x="'+(L-7)+'" y="'+(y+3).toFixed(1)+'" text-anchor="end">'+money(v)+'</text>';
+  }
+  for(var i=0;i<DAYS.length;i+=7)
+    svg+='<text class="lbl" x="'+X(i).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle">'+dlabel(DAYS[i])+'</text>';
+  // Diwali day marker - the whole season points at it
+  var di=DAYS.indexOf("2026-11-08");
+  if(di>=0) svg+='<line x1="'+X(di).toFixed(1)+'" y1="'+T+'" x2="'+X(di).toFixed(1)+'" y2="'+(H-B)+'" stroke="var(--fest)" stroke-width="1" stroke-dasharray="3 3"/>'
+               + '<text class="lbl" x="'+(X(di)-5).toFixed(1)+'" y="'+(T+10)+'" text-anchor="end" fill="var(--fest)">Diwali</text>';
+  svg+='<path d="'+path(ct)+'" fill="none" stroke="var(--ink-3)" stroke-width="2" stroke-dasharray="5 4"/>';
+  if(ca.length) svg+='<path d="'+path(ca)+'" fill="none" stroke="var(--fest)" stroke-width="2.5"/>';
+  svg+='</svg>';
+
+  host.insertAdjacentHTML("beforeend",
+    '<div class="legend"><span><i style="background:var(--ink-3)"></i>Cumulative target</span>'
+   +'<span><i style="background:var(--fest)"></i>Cumulative actual</span></div>'+svg);
+}
+
+/* ---------- tables ---------- */
+function sortOf(){ return state.sort[state.tab]||{c:null,dir:"desc"}; }
+function sortHead(th,c){
+  var so=sortOf(); th.className=(th.className?th.className+" ":"")+"sortable";
+  if(so.c===c){ th.className+=" sorted"+(so.dir==="desc"?" desc":""); }
+  th.addEventListener("click",function(){
+    var cur=sortOf();
+    state.sort[state.tab]= (cur.c===c) ? {c:c,dir:cur.dir==="desc"?"asc":"desc"} : {c:c,dir:"desc"};
+    render();
+  });
+}
+function table(cols, rows, totalRow){
+  var wrap=el("div","scroll"), tb=el("table"), th=el("thead"), hr=el("tr");
+  cols.forEach(function(c,i){
+    var h=el("th",i===0?"stick1":null,c.lab);
+    if(i===0) h.style.textAlign="left";
+    if(c.key!==undefined) sortHead(h,c.key);
+    hr.appendChild(h);
+  });
+  th.appendChild(hr); tb.appendChild(th);
+  var body=el("tbody");
+  if(totalRow){
+    var tr=el("tr","total");
+    cols.forEach(function(c,i){ tr.appendChild(el("td",i===0?"code":(c.cls||"num"), totalRow[i])); });
+    body.appendChild(tr);
+  }
+  var so=sortOf();
+  if(so.c!==null){
+    var ci=-1; cols.forEach(function(c,i){ if(c.key===so.c) ci=i; });
+    if(ci>=0) rows.sort(function(a,b){
+      var x=a.sortv[ci], y=b.sortv[ci];
+      if(x===null||x===undefined) return 1; if(y===null||y===undefined) return -1;
+      if(typeof x==="string") return so.dir==="desc"? y.localeCompare(x) : x.localeCompare(y);
+      return so.dir==="desc"? y-x : x-y;
+    });
+  }
+  rows.forEach(function(r){
+    var tr=el("tr");
+    r.cells.forEach(function(v,i){
+      var td=el("td",i===0?"code":(cols[i].cls||"num"));
+      if(v && v.html){ td.innerHTML=v.html; } else { td.textContent=v; }
+      tr.appendChild(td);
+    });
+    body.appendChild(tr);
+  });
+  tb.appendChild(body); wrap.appendChild(tb);
+  return wrap;
+}
+
+function storeRows(idx){
+  var n=DAYS.length-1, out=[];
+  idx.forEach(function(s){
+    var st=S[s];
+    var seasonT=storeSum(TG,s,0,n);
+    var tTD=ELAPSED>0?storeSum(TG,s,0,LASTI):0;
+    var aTD=ELAPSED>0?storeSum(AC,s,0,LASTI):0;
+    var pr=ELAPSED>0?ltlPair(s,0,LASTI):null;
+    var ltl=pr?pr[0]/pr[1]-1:null;
+    /* Mark a comparison measured over fewer days than the season has run, so a
+       part-window figure is never read as a full one. */
+    var clip=(pr&&pr[2]<ELAPSED)
+      ? "Measured over "+pr[2]+" of "+ELAPSED+" days, matched to the same dates "
+        +D.lyShift+" days earlier, because "+st.code+" opened "+dlong(st.opened)+"."
+      : null;
+    var ach=tTD?aTD/tTD:null, gap=aTD-tTD;
+    var need=REMAIN>0?Math.max(seasonT-aTD,0)/REMAIN:null;
+    var notOpen = st.isNew && aTD===0;
+    var name = notOpen
+      ? {html:'<span>'+st.code+'</span> <span class="pill">opens '+(st.firstTarget?dlabel(st.firstTarget):"?")+'</span>'}
+      : st.code;
+    out.push({
+      cells:[name, st.cluster||"", rupee(seasonT), rupee(tTD), rupee(aTD),
+             notOpen?"–":pct(ach), notOpen?"–":rupee(gap),
+             need===null?"–":rupee(need),
+             (notOpen||ltl===null) ? "–"
+               : (clip ? {html:spct(ltl)+'<sup class="clip" title="'+clip+'">*</sup>'} : spct(ltl))],
+      sortv:[st.code, st.cluster||"", seasonT, tTD, aTD,
+             notOpen?null:ach, notOpen?null:gap, need, notOpen?null:ltl]
+    });
+  });
+  return out;
+}
+
+function viewSummary(host){
+  host.appendChild(el("h2",null,"Season pace"));
+  host.appendChild(el("p","note",
+    "Cumulative target against cumulative actual across the 45 days. The gap between the two lines is "
+    +"the shortfall to date; the question in a review is whether it is widening or closing. "
+    +"Last year is not drawn here because Diwali moved 19 days, so the calendar lines do not overlay. "
+    +"The vs LY column below is like-to-like: same stores, same days, both sides."));
+  renderPace(host);
+
+  host.appendChild(el("h2",null,"By cluster, season to date"));
+  var byCl={}, idx=active(), n=DAYS.length-1;
+  idx.forEach(function(s){
+    var c=S[s].cluster||"(none)";
+    var o=byCl[c]||(byCl[c]={t:0,td:0,a:0,stores:0,idx:[]});
+    o.t+=storeSum(TG,s,0,n); o.stores++; o.idx.push(s);
+    if(ELAPSED>0){ o.td+=storeSum(TG,s,0,LASTI); o.a+=storeSum(AC,s,0,LASTI); }
+  });
+  var rows=Object.keys(byCl).map(function(c){
+    var o=byCl[c], ach=o.td?o.a/o.td:null;
+    /* Each cluster gets its own like-to-like basket, so the comparison is
+       between the same stores over the same days on both sides. */
+    var b=ELAPSED>0?ltlBasket(o.idx,0,LASTI):null;
+    var lyCell = b ? (b.n<o.stores
+        ? {html:spct(b.growth)+'<sup class="clip" title="Like-to-like across '
+            +b.n+' of '+o.stores+' stores - the rest had no trading in the matching '
+            +'period last year.">*</sup>'}
+        : spct(b.growth)) : "–";
+    return { cells:[c, o.stores, rupee(o.t), rupee(o.td), rupee(o.a), pct(ach), rupee(o.a-o.td), lyCell],
+             sortv:[c, o.stores, o.t, o.td, o.a, ach, o.a-o.td, b?b.growth:null] };
+  });
+  var tot=rows.reduce(function(p,r){return [p[0]+r.sortv[1],p[1]+r.sortv[2],p[2]+r.sortv[3],p[3]+r.sortv[4]];},[0,0,0,0]);
+  host.appendChild(table(
+    [{lab:"Cluster",key:"c",cls:"name"},{lab:"Stores",key:"n"},{lab:"Season target",key:"t"},
+     {lab:"Target to date",key:"td"},{lab:"Actual",key:"a"},{lab:"Ach%",key:"ach"},
+     {lab:"Gap",key:"g"},{lab:"vs LY",key:"ly"}],
+    rows,
+    ["ALL CLUSTERS", tot[0], rupee(tot[1]), rupee(tot[2]), rupee(tot[3]),
+     pct(tot[2]?tot[3]/tot[2]:null), rupee(tot[3]-tot[2]), spct(headline().growth)]));
+}
+
+function viewStores(host){
+  host.appendChild(el("h2",null,"Store performance, season to date"));
+  host.appendChild(el("p","note",
+    "Target to date counts only the days that have happened. Needed/day is what the remaining "
+    +REMAIN+" day"+(REMAIN===1?"":"s")+" must average for the store to finish on its season number. "
+    +"Stores opening later in the season carry a target but no history yet and are marked. "
+    +"vs LY is like-to-like on the same basis as the main dashboard: every day is paired with its "
+    +"counterpart "+D.lyShift+" days earlier and a pair counts only where the store was already "
+    +"trading then, so a store that opened mid-way through the prior window is compared over the "
+    +"days both years share rather than dropped. Those carry a * with the exact span."));
+  var idx=active(), h=headline();
+  if(!idx.length){ host.appendChild(el("div","empty","No stores match the current filters.")); return; }
+  host.appendChild(table(
+    [{lab:"Store",key:"code",cls:"code"},{lab:"Cluster",key:"cl",cls:"name"},
+     {lab:"Season target",key:"t"},{lab:"Target to date",key:"td"},{lab:"Actual",key:"a"},
+     {lab:"Ach%",key:"ach"},{lab:"Gap",key:"g"},{lab:"Needed/day",key:"need"},{lab:"vs LY",key:"ly"}],
+    storeRows(idx),
+    ["ALL STORES","", rupee(h.seasonT), rupee(h.tToDate), rupee(h.aToDate),
+     pct(h.ach), rupee(h.gap), h.need===null?"–":rupee(h.need), spct(h.growth)]));
+}
+
+function viewDaily(host){
+  host.appendChild(el("h2",null,"Day by day"));
+  host.appendChild(el("p","note",
+    "Every day of the season for the current selection. Days after "+dlong(D.last)
+    +" have a target but no sales yet."));
+  var idx=active(), rows=[], ct=0, ca=0;
+  for(var d=0;d<DAYS.length;d++){
+    var t=sum(TG,idx,d,d), a=d<=LASTI?sum(AC,idx,d,d):null;
+    var b=(a===null)?null:ltlBasket(idx,d,d);     // like-to-like for that one day
+    ct+=t; if(a!==null) ca+=a;
+    rows.push({ cells:[dlabel(DAYS[d]), rupee(t), a===null?"–":rupee(a),
+                       a===null?"–":pct(t?a/t:null), rupee(ct), a===null?"–":rupee(ca),
+                       b?spct(b.growth):"–"],
+                sortv:[DAYS[d], t, a, (a===null||!t)?null:a/t, ct, a===null?null:ca,
+                       b?b.growth:null] });
+  }
+  host.appendChild(table(
+    [{lab:"Date",key:"d",cls:"code"},{lab:"Target",key:"t"},{lab:"Actual",key:"a"},{lab:"Ach%",key:"ach"},
+     {lab:"Cum. target",key:"ct"},{lab:"Cum. actual",key:"ca"},{lab:"vs LY",key:"ly"}],
+    rows, null));
+}
+
+function viewGrid(host){
+  host.appendChild(el("h2",null,"Store × day grid"));
+  host.appendChild(el("p","note","Daily POS actual against target for every store. Scroll sideways for later dates."));
+  var idx=active();
+  if(!idx.length){ host.appendChild(el("div","empty","No stores match the current filters.")); return; }
+  var wrap=el("div","scroll"), tb=el("table"), th=el("thead"), hr=el("tr");
+  var a=el("th","stick1","Store"); a.style.textAlign="left"; hr.appendChild(a);
+  for(var d=0;d<DAYS.length;d++) hr.appendChild(el("th",null,dlabel(DAYS[d])));
+  th.appendChild(hr); tb.appendChild(th);
+  var body=el("tbody");
+  idx.forEach(function(s){
+    var tr=el("tr"); tr.appendChild(el("td","code",S[s].code));
+    for(var d=0;d<DAYS.length;d++){
+      var t=TG[s][d]||0, v=AC[s][d]||0;
+      var td=el("td","num", d>LASTI ? (t?money(t):"–") : (v||t?money(v):"–"));
+      if(d<=LASTI && t){
+        var r=v/t;
+        td.setAttribute("style","background:rgba("+(r>=1?"12,163,12":"208,59,59")+","
+          +Math.min(Math.abs(r-1),1).toFixed(2)+")");
+        td.title=S[s].code+" · "+dlong(DAYS[d])+"\ntarget "+rupee(t)+"\nactual "+rupee(v)
+                +"\nachievement "+pct(r);
+      }
+      tr.appendChild(td);
+    }
+    body.appendChild(tr);
+  });
+  tb.appendChild(body); wrap.appendChild(tb); host.appendChild(wrap);
+}
+
+var VIEWS=[{id:"summary",tab:"Summary",fn:viewSummary},
+           {id:"stores", tab:"Stores", fn:viewStores},
+           {id:"daily",  tab:"Day by day", fn:viewDaily},
+           {id:"grid",   tab:"Store × day", fn:viewGrid}];
+
+function renderTabs(){
+  var host=document.getElementById("tabs"); host.innerHTML="";
+  VIEWS.forEach(function(v){
+    var b=el("button",null,v.tab);
+    b.type="button"; b.setAttribute("aria-pressed", v.id===state.tab?"true":"false");
+    b.addEventListener("click",function(){ state.tab=v.id; render(); });
+    host.appendChild(b);
+  });
+}
+function render(){
+  renderTabs(); renderTiles();
+  var host=document.getElementById("panel"); host.innerHTML="";
+  var v=VIEWS.filter(function(x){return x.id===state.tab;})[0]||VIEWS[0];
+  v.fn(host);
+}
+
+/* ---------- filters ---------- */
+(function initFilters(){
+  var cl=document.getElementById("fcl"), seen={};
+  cl.appendChild(new Option("All clusters",""));
+  S.forEach(function(s){ if(s.cluster && !seen[s.cluster]){ seen[s.cluster]=1; cl.appendChild(new Option(s.cluster,s.cluster)); } });
+  cl.addEventListener("change",function(e){ state.cl=e.target.value; render(); });
+  var dl=document.getElementById("stlist");
+  S.forEach(function(s){ dl.appendChild(new Option(s.code)); });
+  document.getElementById("fst").addEventListener("change",function(e){
+    var v=e.target.value.trim();
+    state.st = S.some(function(s){return s.code===v;}) ? v : "";
+    if(v && !state.st) e.target.value="";
+    render();
+  });
+  document.getElementById("clear").addEventListener("click",function(){
+    state.cl=""; state.st=""; cl.value=""; document.getElementById("fst").value=""; render();
+  });
+  document.getElementById("pdf").addEventListener("click",function(){ window.print(); });
+})();
+
+/* ---------- provenance + staleness ---------- */
+/* The pages are Dashboard.html / Diwali.html in the Master folder but
+   index.html / diwali.html once published, so the cross-link has to know
+   which it is looking at. */
+document.getElementById("mainlink").setAttribute("href",
+  location.protocol==="file:" ? "Dashboard.html" : "index.html");
+
+document.getElementById("prov").textContent =
+  "Built from the DSR folder on "+(D.generated||"")+" · sales through "+dlong(D.last)
+ +" · POS only, BILL AMOUNT inclusive of GST · last year is a "+D.lyShift
+ +"-day shift so the festival phases line up · build "+(D.version||"");
+
+(function staleness(){
+  var e=document.getElementById("stale");
+  if(!e||!D.generated||!/^\d{4}-\d{2}-\d{2}$/.test(D.generated)) return;
+  var p=D.generated.split("-"), built=Date.UTC(+p[0],+p[1]-1,+p[2]);
+  var n=new Date(), today=Date.UTC(n.getFullYear(),n.getMonth(),n.getDate());
+  var age=Math.round((today-built)/86400000);
+  if(!isFinite(age)||age<2) return;
+  var days='<span class="age">'+age+' days</span>';
+  if(age>=4){ e.className="stale crit";
+    e.innerHTML='<b>These season numbers are '+days+' out of date.</b> The morning refresh last '
+      +'succeeded on '+dlong(D.generated)+' and has not run since. In a 45-day season that is a '
+      +'large share of the window — do not act on this page until it has refreshed.'; }
+  else { e.className="stale warn";
+    e.innerHTML='<b>Last refreshed '+dlong(D.generated)+'</b>, '+days+' ago. The most recent '
+      +'trading days are not in these figures yet.'; }
+  e.hidden=false;
+})();
+
+render();
+})();
+</script>
