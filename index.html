@@ -173,23 +173,150 @@ th.sorted.desc::after{content:" \25BC"}
 @media (max-width:620px){.mast{align-items:flex-start}.meta{gap:14px}th,td{padding:5px 7px}
   select,input[type=search]{max-width:150px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* ---- print ---------------------------------------------------------------
+   The old rules only hid the chrome, so a print read as a screenshot of the
+   app. This makes it a document: a running header and footer that repeat on
+   every sheet, table headers that repeat when a table spans pages, and rows
+   that are never split across a break.
+
+   Chrome repeats a position:fixed element on every printed page - that is the
+   mechanism behind the header and footer bands.                            */
+.printonly{display:none}
+#printpack{display:none}
+
 @media print{
-  :root{--plane:#fff;--surface:#fff}
-  body{background:#fff;font-size:9px}
-  .bar,.tabs,.noprint{display:none!important}
-  .wrap{max-width:none;padding:0}
-  .sheet{border:none;padding:0}
-  .scroll{overflow:visible}
-  table{font-size:8px;width:auto}
-  th,td{padding:2px 4px;white-space:nowrap}
-  thead th{position:static}
-  .stick1{position:static}
-  tr.total td{background:#44546a!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  thead th{background:#44546a!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  thead tr.grp th{background:#1f3864!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  @page{size:A4 landscape;margin:8mm}
+  :root{--plane:#fff;--surface:#fff;--rule:#ccc;--rule-2:#999}
+  body{background:#fff;font-size:9.5px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .noprint,.bar,.tabs{display:none!important}
+  .wrap{max-width:none;padding:0;margin:0}
+  .sheet{border:none;padding:0;box-shadow:none}
+  .scroll{overflow:visible;max-height:none}
+  .printonly{display:block}
+
+  /* running bands, repeated by the browser on every sheet */
+  /* A fixed band repeats on every page but overlays the content, and CSS has
+     no way to inset a continuation page below it - a table that spills over a
+     break has its repeating header printed underneath the band. So the band is
+     in-flow: once at the top of a tab print, and once per section in the pack,
+     where each section starts its own page. Continuation pages are carried by
+     the repeating table head instead. */
+  .pr-head{position:static;height:auto;margin-bottom:5mm;
+    border-bottom:1.4pt solid #1f3864;display:flex;justify-content:space-between;
+    align-items:flex-end;padding-bottom:2mm}
+  .pr-head .t{font-size:12.5px;font-weight:700;letter-spacing:-.01em;color:#1f3864}
+  .pr-head .r{font-size:8.5px;color:#52514e;text-align:right;line-height:1.5}
+  .pr-foot{display:none}        /* folded into the header band - see above */
+  @page{size:A4 landscape;margin:12mm 10mm 12mm}
+
+  /* tables behave like document tables, not scroll panes */
+  table{font-size:8px;width:100%;border-collapse:collapse}
+  th,td{padding:2.2px 4px;white-space:nowrap;border-bottom:.4pt solid #d8d8d4}
+  thead{display:table-header-group}          /* repeat the head on every page */
+  tfoot{display:table-footer-group}
+  tr{break-inside:avoid;page-break-inside:avoid}
+  thead th,.stick1{position:static}
+  thead th{background:#44546a!important;color:#fff!important}
+  thead tr.grp th{background:#1f3864!important;color:#fff!important}
+  tr.total td{background:#e8edf5!important;color:#0b0b0b!important;font-weight:700}
+  tbody tr:nth-child(even){background:#f7f7f5!important}
+
+  /* headings and blocks hold together */
+  h2,h3,.sheet-head{break-after:avoid;page-break-after:avoid}
+  .sm-band,.sm-card,.sm-mi,.sm-tile{break-inside:avoid;page-break-inside:avoid}
+  .sm-band{background:#1f3864!important;color:#fff!important}
+  .sm-tiles{grid-template-columns:repeat(6,1fr)}
+  .sm-grid{grid-template-columns:repeat(3,1fr)}
+  .sm-mx{grid-template-columns:repeat(6,1fr)}
+  .sm-tile,.sm-card,.sm-mi{border:.5pt solid #d8d8d4}
+  .sm-bar{background:#e4e4e0!important}
+  .sm-bar i{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .pill{border:.4pt solid #bbb}
+
+  /* the composed pack replaces the live page when it is being printed */
+  body.packmode>.wrap,body.packmode>.pr-head{display:none}
+  body.packmode #printpack{display:block}
+  /* every section starts a page, and is inset so its first line clears the
+     running header; the bottom inset keeps the last row off the footer */
+  .pk-section{break-before:page;page-break-before:always;padding:0 0 4mm}
+  .pk-section:first-of-type{break-before:auto;page-break-before:auto}
+  .pk-band{display:flex;justify-content:space-between;align-items:flex-end;
+    border-bottom:1.4pt solid #1f3864;padding-bottom:2mm;margin-bottom:4mm}
+  .pk-band .t{font-size:11px;font-weight:700;color:#1f3864;letter-spacing:-.01em}
+  .pk-band .r{font-size:7.5px;color:#52514e;text-align:right;line-height:1.5}
+  .pk-section>h3{margin:0 0 7px;font-size:12px;font-weight:700;text-transform:uppercase;
+    letter-spacing:.06em;color:#1f3864;border-bottom:.6pt solid #c3c2b7;padding-bottom:3px}
+  .pk-section>p.sub{margin:0 0 9px;font-size:8.5px;color:#52514e}
+  .pk-cover{text-align:left;padding-top:4mm}
+  .pk-cover h1{margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;color:#1f3864}
+  .pk-cover .meta{margin-top:10px;font-size:10px;color:#52514e;line-height:1.9}
+  .pk-cover .meta b{color:#0b0b0b}
 }
+/* ---- Cluster Summary tab -------------------------------------------------
+   A fixed month-to-date view, so it reads the same whatever the date pickers
+   are set to. Status is never carried by colour alone - the achievement number
+   sits inside its own pill, so the figure is always legible without it. */
+.sm-band{background:var(--head);color:var(--head-ink);border-radius:10px;padding:18px 22px;
+  display:flex;flex-wrap:wrap;gap:16px 32px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sm-band>div:first-child{flex:1 1 440px;min-width:0}
+.sm-band h3{margin:0;font-size:19px;font-weight:700;letter-spacing:-.01em}
+/* pre-line so the second line of the subtitle actually breaks */
+.sm-band .sub{margin:5px 0 0;font-size:12px;opacity:.85;line-height:1.6;white-space:pre-line}
+.sm-band .hero{text-align:right;flex:0 0 auto;margin-left:auto}
+.sm-band .hero b{display:block;font-size:40px;font-weight:700;line-height:1;letter-spacing:-.02em}
+.sm-band .hero span{display:block;font-size:11.5px;opacity:.85;margin-top:5px}
+
+.sm-tiles{display:grid;gap:10px;margin-bottom:16px;
+  grid-template-columns:repeat(auto-fit,minmax(168px,1fr))}
+.sm-tile{background:var(--surface);border:1px solid var(--rule);border-radius:9px;padding:12px 14px}
+.sm-tile .k{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);font-weight:600}
+.sm-tile .v{font-size:23px;font-weight:600;margin-top:5px;letter-spacing:-.02em}
+.sm-tile .n{font-size:11.5px;color:var(--ink-2);margin-top:2px}
+
+/* Progress: one baseline, <=10px thick, 4px rounded data-end, square at zero. */
+.sm-bar{height:8px;border-radius:999px;background:var(--rule);margin-top:9px;overflow:hidden}
+.sm-bar i{display:block;height:100%;border-radius:0 4px 4px 0;background:var(--accent)}
+.sm-bar i.good{background:var(--good)} .sm-bar i.warn{background:var(--warn)}
+.sm-bar i.crit{background:var(--crit)}
+
+.sm-grid{display:grid;gap:10px;margin-bottom:16px;
+  grid-template-columns:repeat(auto-fit,minmax(236px,1fr))}
+.sm-card{background:var(--surface);border:1px solid var(--rule);border-radius:9px;padding:13px 15px}
+/* two lines reserved, so a long cluster name does not push its card out of
+   step with the rest of the row */
+.sm-card .nm{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+  min-height:2.6em;display:flex;align-items:flex-start}
+.sm-card .tg{font-size:11.5px;color:var(--ink-2);margin-top:3px}
+.sm-card .big{font-size:24px;font-weight:600;margin-top:6px;letter-spacing:-.02em}
+.sm-card .gp{font-size:11.5px;color:var(--ink-2);margin-top:3px}
+.sm-card .ac{font-size:11.5px;font-weight:600;margin-top:7px}
+
+.sm-mx{display:grid;gap:9px;margin-bottom:16px;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.sm-mi{background:var(--surface);border:1px solid var(--rule);border-radius:9px;padding:11px 13px;text-align:center}
+.sm-mi .nm{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+  color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sm-mi .v{font-size:26px;font-weight:600;margin-top:5px;letter-spacing:-.02em}
+.sm-mi .u{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);font-weight:600}
+.sm-mi .d{font-size:11px;color:var(--ink-2);margin-top:5px}
+
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-weight:600;font-size:11.5px;
+  font-variant-numeric:tabular-nums}
+.pill.good{background:#e4f6e4;color:#0a6b0a} .pill.warn{background:#fdf3dd;color:#7a5600}
+.pill.crit{background:#fbe6e6;color:#8d1f1f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pill.good{background:#0f2a0f;color:#7fd27f}
+ :root:not([data-theme="light"]) .pill.warn{background:#2e2409;color:#f6dc9a}
+ :root:not([data-theme="light"]) .pill.crit{background:#331212;color:#f6b6b6}}
+h3.sub-h{margin:4px 0 9px;font-size:12.5px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--ink-2)}
+.sm-foot{font-size:11.5px;color:var(--ink-2);font-style:italic;margin:2px 0 0}
+
 </style>
+
+<div class="pr-head printonly" aria-hidden="true">
+  <div class="t" id="prh-title">Store Performance</div>
+  <div class="r" id="prh-meta"></div>
+</div>
+<div id="printpack"></div>
 
 <div class="wrap">
   <div class="stale" id="stale" role="status" hidden></div>
@@ -233,7 +360,8 @@ th.sorted.desc::after{content:" \25BC"}
         <option value="all">Everything</option>
       </select>
     </div>
-    <div class="ctl"><button type="button" id="printbtn">Print / Save PDF</button></div>
+    <div class="ctl"><button type="button" id="printbtn" title="Print the tab you are looking at">Print this tab</button></div>
+    <div class="ctl"><button type="button" id="packbtn" title="A fixed review document: summary, clusters and the key KPI tables">Print summary pack</button></div>
     <div class="ctl"><button type="button" id="xlsbtn">Download Excel</button></div>
   </div>
 
@@ -625,6 +753,8 @@ function total(mk,mode,k,codes,keys,ki){
 
 /* ---------------- views ---------------- */
 var VIEWS=[
+ {id:"summary",tab:"Summary",kind:"summary",
+  note:"Month to date by cluster, fixed \u2014 this tab ignores the date pickers so it always answers \"where is the month\". RSV is POS, matching every other tab. Doors counts every store mapped to the cluster, trading or not."},
  {id:"tva",tab:"Target vs Actual",kind:"blocks",cols:["ptg","pos","ach","omni","omnic"],
   note:"Five columns per period, as in the source workbook. Achievement is POS actual over POS target; OMNI contribution is OMNI over total sales."},
  {id:"growth",tab:"Growth",kind:"matrix",m:"growth",
@@ -655,7 +785,7 @@ var VIEWS=[
   note:"Stores breaching a threshold in the latest period shown."}
 ];
 
-var state={view:"tva",mode:"W",dfrom:null,dto:null,tint:true,
+var state={view:"summary",mode:"W",dfrom:null,dto:null,tint:true,
            // each filter holds a list; empty means "everything"
            cluster:[],region:[],stores:[],q:"",catm:"contrib",sweek:null,topn:50,
            // sort is per tab: clicking a heading sorts that tab only
@@ -863,6 +993,279 @@ function renderTable(v,host,blocks){
     body.appendChild(tr);
   });
   tb.appendChild(body); wrap.appendChild(tb); host.appendChild(wrap);
+}
+
+/* ---- print -------------------------------------------------------------- */
+function printBands(title, sub){
+  document.getElementById("prh-title").textContent=title;
+  // one band carries everything: a fixed footer lands on a table row whenever
+  // the table flows to the bottom of a page, and no CSS reserves space for it
+  document.getElementById("prh-meta").innerHTML=
+    sub+"<br>Built "+(D.generated||"")
+    +" · POS is BILL AMOUNT, inclusive of GST · build 4.12 (2026-10-06) - print pack and weekly cluster workbooks";
+}
+function filterLine(){
+  var bits=[];
+  if(state.cluster.length) bits.push("Cluster: "+state.cluster.join(", "));
+  if(state.region.length)  bits.push("Region: "+state.region.join(", "));
+  if(state.stores.length)  bits.push("Store: "+state.stores.join(", "));
+  return bits.length? bits.join(" · ") : "All clusters, regions and stores";
+}
+function printTab(){
+  var v=VIEWS.filter(function(x){return x.id===state.view;})[0];
+  var w = v.kind==="summary" ? mtdWindow() : {from:state.dfrom,to:state.dto};
+  printBands("Store Performance — "+(v?v.tab:""),
+    periodLong(w.from,"D")+" to "+periodLong(w.to,"D")
+    +" &middot; "+({D:"Daily",W:"Weekly",M:"Monthly",R:"Range"}[state.mode]||"")
+    +"<br>"+filterLine());
+  document.body.classList.remove("packmode");
+  window.print();
+}
+
+/* The summary pack: one document, the same every time, so it can be circulated
+   without explaining which tab was open when it was made. Built fresh into a
+   container that only exists during printing, then thrown away. */
+var PACK_TABS=["tva","growth","atv","upt","asp","disc","conv","sspd","ltl","bills","qty"];
+/* A band at the top of every section, so each page of the pack identifies
+   itself without a fixed element that would overlay the content below it. */
+function packBand(){
+  var b=el("div","pk-band");
+  b.appendChild(el("div","t","Weekly Operations Review · The Bear House"));
+  var r=el("div","r");
+  r.innerHTML = periodLong(state.dfrom,"D")+" to "+periodLong(state.dto,"D")
+    +" by "+PERIOD_WORD[state.mode]+" · "+filterLine()
+    +"<br>Built "+(D.generated||"")+" · POS is BILL AMOUNT, inclusive of GST";
+  b.appendChild(r);
+  return b;
+}
+function buildPack(){
+  var host=document.getElementById("printpack");
+  host.innerHTML="";
+  var S=summaryData();
+
+  var cover=el("section","pk-section pk-cover");
+  cover.appendChild(el("h1",null,"Weekly Operations Review"));
+  var meta=el("div","meta");
+  meta.innerHTML =
+      "<b>The Bear House</b> &middot; Retail Operations<br>"
+    + "Month to date <b>"+periodLong(S.w.from,"D")+" to "+periodLong(S.w.to,"D")+"</b>"
+    + " &middot; "+S.days+" days elapsed<br>"
+    + "KPI tables cover <b>"+periodLong(state.dfrom,"D")+" to "+periodLong(state.dto,"D")+"</b>"
+    + " by "+PERIOD_WORD[state.mode]+"<br>"
+    + filterLine()+"<br>"
+    + "<b>"+S.t.doors+"</b> doors &middot; <b>"+S.rows.length+"</b> clusters &middot; "
+    + Math.round(S.t.area).toLocaleString("en-IN")+" sq ft<br>"
+    + "Achievement <b>"+pct(S.t.ach)+"</b> &middot; RSV "+lakh(S.t.rsv)+" of "+lakh(S.t.tgt)
+    + " &middot; gap "+lakh(S.t.gap)+"<br>"
+    + "Prepared "+periodLong(D.generated,"D")+" &middot; sales are BILL AMOUNT, inclusive of GST";
+  cover.appendChild(meta);
+  host.appendChild(cover);
+
+  // the summary tab, rendered into the pack
+  var sec=el("section","pk-section");
+  sec.appendChild(packBand());
+  sec.appendChild(el("h3",null,"Cluster summary — month to date"));
+  renderSummary({kind:"summary"}, sec);
+  host.appendChild(sec);
+
+  // then each KPI table, one per page
+  PACK_TABS.forEach(function(id){
+    var v=VIEWS.filter(function(x){return x.id===id;})[0];
+    if(!v) return;
+    var s2=el("section","pk-section");
+    s2.appendChild(packBand());
+    var lab = v.kind==="matrix" && v.m==="growth" ? GROWTH_LAB[state.mode] : v.tab;
+    s2.appendChild(el("h3",null,lab));
+    s2.appendChild(el("p","sub",v.note));
+    renderTable(v, s2, v.kind==="blocks");
+    host.appendChild(s2);
+  });
+}
+function printPack(){
+  buildPack();
+  var S=summaryData();
+  printBands("Weekly Operations Review",
+    periodLong(S.w.from,"D")+" to "+periodLong(S.w.to,"D")+" MTD"
+    +" &middot; KPI tables "+periodLong(state.dfrom,"D")+" to "+periodLong(state.dto,"D")
+    +"<br>"+filterLine());
+  document.body.classList.add("packmode");
+  window.print();
+}
+// leave no trace of the pack once the print dialog closes
+window.addEventListener("afterprint",function(){
+  document.body.classList.remove("packmode");
+  document.getElementById("printpack").innerHTML="";
+});
+
+/* ---- Cluster Summary ------------------------------------------------------
+   Month to date, fixed: this tab deliberately ignores the date pickers so it
+   always answers "where is the month". Everything else on the dashboard
+   follows the filter; this one does not, and the band says so.
+
+   RSV is POS, matching every other tab. Doors counts every store mapped to the
+   cluster whether or not it traded, so a dark store still carries its area -
+   which is why SSPD here uses days elapsed, as the circulated report defines
+   it, rather than each store's own trading days.                            */
+function mtdWindow(){
+  var last=DATES[DATES.length-1];
+  return {from:last.slice(0,8)+"01", to:last};
+}
+function summaryData(){
+  var w=mtdWindow(), idx=storeList(), inSel={};
+  for(var i=0;i<idx.length;i++) inSel[idx[i]]=1;
+  var byCl={}, totals={tgt:0,rsv:0,qty:0,area:0,doors:0};
+  // doors and area come from the store list, not from trading
+  for(var si=0; si<STORES.length; si++){
+    if(!inSel[si]) continue;
+    var st=STORES[si], c=st.cluster||"(unassigned)";
+    var o=byCl[c]||(byCl[c]={cl:c,doors:0,area:0,tgt:0,rsv:0,qty:0,fmt:{}});
+    o.doors++; o.area+=st.sqft||0; o.fmt[st.fmt||"?"]=1;
+    totals.doors++; totals.area+=st.sqft||0;
+  }
+  for(var r=0;r<ROWS.length;r++){
+    var row=ROWS[r], ds=DATES[row[C.d]];
+    if(ds<w.from||ds>w.to) continue;
+    if(!inSel[row[C.s]]) continue;
+    var cc=STORES[row[C.s]].cluster||"(unassigned)", oo=byCl[cc];
+    if(!oo) continue;
+    oo.tgt+=row[C.ptg]; oo.rsv+=row[C.pos]; oo.qty+=row[C.units];
+    totals.tgt+=row[C.ptg]; totals.rsv+=row[C.pos]; totals.qty+=row[C.units];
+  }
+  // days elapsed in the month, to the latest day with data
+  var days=(utc(w.to)-utc(w.from))/86400000+1;
+  var fmts={};
+  var rows=Object.keys(byCl).map(function(k){
+    var o=byCl[k];
+    for(var ff in o.fmt) fmts[ff]=1;
+    o.ach  = o.tgt? o.rsv/o.tgt : null;
+    o.gap  = o.tgt - o.rsv;
+    o.contrib = totals.rsv? o.rsv/totals.rsv : null;
+    o.asp  = o.qty? o.rsv/o.qty : null;
+    o.sspd = (o.area&&days)? o.rsv/(o.area*days) : null;
+    return o;
+  }).sort(function(a,b){ return b.rsv-a.rsv; });
+  totals.ach=totals.tgt?totals.rsv/totals.tgt:null;
+  totals.gap=totals.tgt-totals.rsv;
+  totals.asp=totals.qty?totals.rsv/totals.qty:null;
+  totals.sspd=(totals.area&&days)?totals.rsv/(totals.area*days):null;
+  totals.days=days; totals.formats=Object.keys(fmts).length;
+  return {rows:rows, t:totals, w:w, days:days};
+}
+/* Achievement is a status, so it ships as a pill with the number inside it -
+   the figure reads the same with the colour removed. */
+function achState(v){ return v===null?"":(v>=0.95?"good":(v>=TH.ach?"warn":"crit")); }
+function pill(v){
+  var e=el("span","pill "+achState(v), v===null?"–":pct(v));
+  return e;
+}
+function lakh(v){ return v===null||!isFinite(v)?"–":"₹"+(v/1e5).toFixed(2)+"L"; }
+function bar(frac,state){
+  var w=el("div","sm-bar"), i=el("i");
+  i.className=state||"";
+  i.style.width=Math.max(0,Math.min(1,frac||0))*100+"%";
+  w.appendChild(i); return w;
+}
+function monthName(k){ var p=k.split("-"); return MON[+p[1]-1]+" "+p[0]; }
+
+function renderSummary(v,host){
+  var S=summaryData(), t=S.t;
+  if(!S.rows.length){ host.appendChild(el("div","empty","No stores match the current filters.")); return; }
+
+  /* band */
+  var band=el("div","sm-band"), bl=el("div");
+  bl.appendChild(el("h3","","Cluster Summary — "+monthName(S.w.from)));
+  bl.appendChild(el("p","sub",
+    "Month to date · "+periodLong(S.w.from,"D")+" to "+periodLong(S.w.to,"D")
+    +" · "+S.days+" days elapsed · "+t.doors+" doors across "+S.rows.length
+    +" cluster"+(S.rows.length===1?"":"s")+" · "+t.formats+" formats"
+    +"\nTotal floor area "+Math.round(t.area).toLocaleString("en-IN")+" sq ft · "
+    +"Blended ASP "+inr(t.asp)+" · Avg SSPD "+inr(t.sspd)
+    +" · POS only, BILL AMOUNT inclusive of GST"));
+  var hero=el("div","hero");
+  hero.appendChild(el("b",null,t.ach===null?"–":pct(t.ach)));
+  hero.appendChild(el("span",null,"MTD achievement · "+lakh(t.rsv)+" of "+lakh(t.tgt)));
+  band.appendChild(bl); band.appendChild(hero); host.appendChild(band);
+
+  /* tiles */
+  var tiles=el("div","sm-tiles");
+  function tile(k,val,note,frac,state){
+    var d=el("div","sm-tile");
+    d.appendChild(el("div","k",k));
+    d.appendChild(el("div","v",val));
+    if(note) d.appendChild(el("div","n",note));
+    if(frac!==undefined) d.appendChild(bar(frac,state));
+    tiles.appendChild(d);
+  }
+  tile("Month target", lakh(t.tgt), "full month plan", 1, "");
+  tile("RSV achieved", lakh(t.rsv), pct(t.ach)+" of target", t.ach, achState(t.ach));
+  tile("Gap to target", lakh(t.gap), t.gap>0?"still to achieve":"ahead of plan",
+       t.tgt?Math.max(0,t.gap)/t.tgt:0, t.gap>0?"crit":"good");
+  tile("Total qty sold", cnt(t.qty), "units MTD");
+  tile("Blended ASP", inr(t.asp), "per unit");
+  tile("Avg SSPD", inr(t.sspd), "sales / sq ft / day");
+  host.appendChild(tiles);
+
+  /* target vs achievement, per cluster */
+  host.appendChild(el("h3","sub-h","Target vs achievement by cluster"));
+  var grid=el("div","sm-grid");
+  S.rows.forEach(function(o){
+    var c=el("div","sm-card");
+    c.appendChild(el("div","nm",o.cl));
+    c.appendChild(el("div","tg","Target "+lakh(o.tgt)+" · "+o.doors+" doors"));
+    c.appendChild(el("div","big",lakh(o.rsv)));
+    c.appendChild(el("div","gp", (o.gap>0?"Gap ▼ ":"Ahead ▲ ")+lakh(Math.abs(o.gap))));
+    c.appendChild(bar(o.ach,achState(o.ach)));
+    var a=el("div","ac"); a.appendChild(pill(o.ach));
+    a.appendChild(el("span",null," achieved"));
+    c.appendChild(a);
+    grid.appendChild(c);
+  });
+  host.appendChild(grid);
+
+  /* productivity matrix, sorted by SSPD */
+  host.appendChild(el("h3","sub-h","Productivity by cluster — sorted by SSPD"));
+  var mx=el("div","sm-mx");
+  S.rows.slice().sort(function(a,b){ return (b.sspd||0)-(a.sspd||0); }).forEach(function(o){
+    var m=el("div","sm-mi");
+    m.appendChild(el("div","nm",o.cl));
+    m.appendChild(el("div","v",inr(o.sspd)));
+    m.appendChild(el("div","u","SSPD"));
+    m.appendChild(el("div","d","ASP "+inr(o.asp)));
+    var d2=el("div","d"); d2.appendChild(pill(o.ach)); m.appendChild(d2);
+    mx.appendChild(m);
+  });
+  host.appendChild(mx);
+
+  /* the breakdown table */
+  host.appendChild(el("h3","sub-h","Complete cluster breakdown"));
+  var wrap=el("div","scroll"), tb=el("table"), th=el("thead"), hr=el("tr");
+  var HEAD=["Cluster","Doors","Target (₹L)","RSV (₹L)","Qty","Ach%","Gap (₹L)","Contrib%","ASP (₹)","Area (sq ft)","SSPD (₹)"];
+  HEAD.forEach(function(h,i){
+    var c=el("th", i===0?"stick1":null, h);
+    if(i===0) c.style.textAlign="left";
+    hr.appendChild(c);
+  });
+  th.appendChild(hr); tb.appendChild(th);
+  var body=el("tbody");
+  function row(o,isTot){
+    var tr=el("tr", isTot?"total":null);
+    tr.appendChild(el("td","code",isTot?"GRAND TOTAL":o.cl));
+    [cnt(o.doors), lakh(o.tgt), lakh(o.rsv), cnt(o.qty)].forEach(function(x){
+      tr.appendChild(el("td","num",x)); });
+    var ac=el("td","num"); ac.appendChild(isTot?el("span",null,pct(o.ach)):pill(o.ach)); tr.appendChild(ac);
+    tr.appendChild(el("td","num",lakh(o.gap)));
+    tr.appendChild(el("td","num", isTot?"100.0%":pct(o.contrib)));
+    tr.appendChild(el("td","num",inr(o.asp)));
+    tr.appendChild(el("td","num",Math.round(o.area).toLocaleString("en-IN")));
+    tr.appendChild(el("td","num",inr(o.sspd)));
+    body.appendChild(tr);
+  }
+  row(t,true); S.rows.forEach(function(o){ row(o,false); });
+  tb.appendChild(body); wrap.appendChild(tb); host.appendChild(wrap);
+  host.appendChild(el("p","sm-foot",
+    "SSPD = RSV ÷ area ÷ "+S.days+" days elapsed, as the circulated report defines it. "
+    +"Doors counts every store mapped to the cluster, so a store that did not trade this "
+    +"month still carries its floor area into SSPD. All rupee figures in lakhs."));
 }
 
 function renderCategory(v,host){
@@ -1083,7 +1486,11 @@ function cellVal(txt){
   var t=String(txt==null?"":txt).trim();
   if(!t||t==="–"||t==="-") return null;
   var isPct=/%$/.test(t);
-  var n=t.replace(/[₹,%\s ]/g,"").replace(/^\+/,"").replace(/\*$/,"");
+  // "₹362.25L" is a number wearing its unit - the column header carries the
+  // unit, so strip it and export 362.25, otherwise the column cannot be summed
+  var lakh=/^-?\u20b9?[\d,]+(\.\d+)?L$/.test(t);
+  var n=t.replace(/[\u20b9,%\s\u2009]/g,"").replace(/^\+/,"").replace(/\*$/,"");
+  if(lakh) n=n.slice(0,-1);
   if(/^-?\d+(\.\d+)?$/.test(n)) return {n:parseFloat(n), pct:isPct};
   return {s:t};
 }
@@ -1133,7 +1540,9 @@ function downloadXlsx(){
   var meta=[
     ["The Bear House — "+title],
     ["Period", {D:"Daily",W:"Weekly",M:"Monthly",R:"Range"}[state.mode]||state.mode],
-    ["Dates", state.dfrom+" to "+state.dto],
+    ["Dates", v && v.kind==="summary"
+               ? mtdWindow().from+" to "+mtdWindow().to+"  (month to date - this tab ignores the date pickers)"
+               : state.dfrom+" to "+state.dto],
     ["Cluster", state.cluster.length?state.cluster.join(", "):"All"],
     ["Region",  state.region.length?state.region.join(", "):"All"],
     ["Store",   state.stores.length?state.stores.join(", "):"All"],
@@ -1169,7 +1578,8 @@ function downloadXlsx(){
   ]);
   var a=document.createElement("a");
   a.href=URL.createObjectURL(blob);
-  a.download="BearHouse_"+title.replace(/[^A-Za-z0-9]+/g,"_")+"_"+state.dfrom+"_to_"+state.dto+".xlsx";
+  var fw = (v && v.kind==="summary") ? mtdWindow() : {from:state.dfrom, to:state.dto};
+  a.download="BearHouse_"+title.replace(/[^A-Za-z0-9]+/g,"_")+"_"+fw.from+"_to_"+fw.to+".xlsx";
   document.body.appendChild(a); a.click();
   setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },0);
 }
@@ -1325,7 +1735,8 @@ function render(){
   }
   host.appendChild(hd);
 
-  if(v.kind==="blocks")        renderTable(v,host,true);
+  if(v.kind==="summary")       renderSummary(v,host);
+  else if(v.kind==="blocks")   renderTable(v,host,true);
   else if(v.kind==="matrix")   renderTable(v,host,false);
   else if(v.kind==="category") renderCategory(v,host);
   else if(v.kind==="style")    renderStyle(v,host);
@@ -1336,6 +1747,11 @@ function render(){
     f.appendChild(el("span",null,"Units by style code. Weekly only — style detail is held per week."));
   } else if(v.kind==="category"){
     f.appendChild(el("span",null,keysShown().length+" "+PERIOD_WORD[state.mode]+"s · company wide"));
+  } else if(v.kind==="summary"){
+    // fixed to the month, so the period count and the tint key do not apply
+    var sw=mtdWindow();
+    f.appendChild(el("span",null,"Month to date · "+periodLong(sw.from,"D")+" to "
+      +periodLong(sw.to,"D")+" · "+storeList().length+" stores · ignores the date pickers"));
   } else {
     f.appendChild(el("span",null,keysShown().length+" "+PERIOD_WORD[state.mode]+"s · "+storeList().length+" stores"));
     var mk = v.kind==="matrix" ? v.m : v.cols[2];
@@ -1408,7 +1824,8 @@ document.getElementById("preset").addEventListener("change",function(e){
   setRange(r.dfrom,r.dto);
   document.getElementById("preset").value=p;   // setRange does not clear it
 });
-document.getElementById("printbtn").addEventListener("click",function(){ window.print(); });
+document.getElementById("printbtn").addEventListener("click",printTab);
+document.getElementById("packbtn").addEventListener("click",printPack);
 document.getElementById("xlsbtn").addEventListener("click",downloadXlsx);
 document.getElementById("clearq").addEventListener("click",function(){
   state.cluster=[]; state.region=[]; state.stores=[];
@@ -1422,7 +1839,7 @@ var r0=defaultRange(state.mode); state.dfrom=r0.dfrom; state.dto=r0.dto;
 document.getElementById("prov").textContent =
   "Built from the DSR folder on "+(D.generated||"")+" \u00b7 "+DATES.length+
   " trading days to "+periodLong(DATES[DATES.length-1],"D")+
-  " \u00b7 sales are BILL AMOUNT, inclusive of GST \u00b7 build 4.10 (2026-10-03) - conversion counts only days with a footfall reading";
+  " \u00b7 sales are BILL AMOUNT, inclusive of GST \u00b7 build 4.12 (2026-10-06) - print pack and weekly cluster workbooks";
 
 /* ---- staleness banner -------------------------------------------------
    D.generated is the date the laptop built this page, written as its local
